@@ -81,21 +81,21 @@ const page = ref(1);
 const props = defineProps(["state"]);
 const search = ref("");
 const queryClient = useQueryClient();
-queryClient.invalidateQueries({ queryKey: ["searchData"] });
 
 const { mutateAsync: mudateDelete } = useMutation({
   mutationFn: (id) => handDeleteAPI(id),
+  onSuccess: () => {
+    queryClient.invalidateQueries({ queryKey: ["searchData"], exact: true });
+  },
 });
-const {
-  data: dataSearch,
-  refetch,
-} = useQuery({
+const { data: dataSearch, refetch } = useQuery({
   queryKey: ["searchData", page],
   queryFn: () => handSearchAPI(page.value, search.value),
   //todo StaleTime is in 10000 => 10 seconds within 10 seconds it will be considered new in 10 seconds, is's call API
   staleTime: 10000,
   select: (data) => data.data,
   retry: 5,
+  keepPreviousData: true,
 });
 const handDelete = async (id) => {
   if (confirm("Are you sure you want to delete")) {

@@ -49,7 +49,8 @@ const queryClient = useQueryClient();
 const { mutate } = useMutation({
   mutationFn: (data) => handUpdateAPI(props.id, data),
   onSuccess: (data) => {
-    queryClient.invalidateQueries("searchData");
+    // setQueryData Update Data
+    queryClient.setQueryData(["searchData", props.id], data);
   },
 });
 const { errors, handleSubmit, defineInputBinds } = useForm({
