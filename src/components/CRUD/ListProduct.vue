@@ -75,7 +75,8 @@
 <script setup>
 import { useMutation, useQuery, useQueryClient } from "@tanstack/vue-query";
 import { handDeleteAPI, handSearchAPI } from "../../api/user";
-import { ref } from "vue";
+import { onMounted, ref } from "vue";
+import axios from "axios";
 const emit = defineEmits();
 const page = ref(1);
 const props = defineProps(["state"]);
